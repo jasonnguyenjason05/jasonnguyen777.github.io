@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jason Nguyen — Automation & Aviation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Mono:wght@300;400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<link href="//cdn-images.mailchimp.com/embedcode/classic-061523.css" rel="stylesheet" type="text/css">
+<style>
+  :root {
+    --cream: #faf8f3;
+    --cream2: #f3efe6;
+    --cream3: #ede8dc;
+    --white: #ffffff;
+    --ink: #1a1814;
+    --ink-mid: #4a4640;
+    --ink-light: #8a8480;
+    --ink-faint: #c4bfb8;
+    --accent: #b8860b;
+    --accent-light: #d4a017;
+    --accent-pale: #f5edda;
+    --border: #ddd8ce;
+    --border-dark: #c4bfb8;
+    --display: 'Playfair Display', Georgia, serif;
+    --mono: 'DM Mono', monospace;
+    --body: 'Lato', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--cream); color: var(--ink); font-family: var(--body); font-weight: 300; overflow-x: hidden; }
+
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 22px 56px; background: rgba(250,248,243,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 12px; }
+  .nav-logo { font-family: var(--display); font-style: italic; font-size: 20px; color: var(--ink); cursor: default; }
+  .nav-logo span { color: var(--accent); font-style: normal; font-size: 11px; font-family: var(--mono); letter-spacing: 0.15em; text-transform: uppercase; display: block; line-height: 1; }
+  .nav-links { display: flex; gap: 40px; list-style: none; }
+  .nav-links a { font-family: var(--mono); font-size: 11px; color: var(--ink-light); text-decoration: none; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-actions { display: flex; gap: 10px; align-items: center; }
+  .nav-btn-resources { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); background: var(--cream2); padding: 10px 18px; text-decoration: none; border: 1px solid var(--border-dark); cursor: default; opacity: 0.8; }
+  .nav-btn-subscribe { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--white); background: var(--ink); padding: 10px 18px; border: none; cursor: pointer; transition: background 0.2s; }
+  .nav-btn-subscribe:hover { background: var(--accent); }
+
+  /* HERO */
+  .hero { position: relative; min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: 130px 56px 80px; gap: 80px; z-index: 1; }
+  .hero-left { opacity: 0; animation: fadeUp 0.8s ease 0.1s forwards; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; }
+  .hero-eyebrow-line { width: 40px; height: 1px; background: var(--accent); }
+  .hero-eyebrow-text { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; }
+  .hero h1 { font-family: var(--display); font-weight: 700; font-size: clamp(52px, 6vw, 84px); line-height: 1.0; letter-spacing: -0.02em; margin-bottom: 10px; color: var(--ink); }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .hero-subtitle { font-family: var(--display); font-style: italic; font-size: clamp(18px, 2vw, 24px); color: var(--ink-mid); margin-bottom: 28px; font-weight: 400; }
+  .hero-divider { width: 60px; height: 1px; background: var(--border-dark); margin-bottom: 28px; }
+  .hero-desc { font-size: 15px; color: var(--ink-mid); line-height: 1.8; max-width: 480px; margin-bottom: 44px; }
+  .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+  .btn-primary { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white); background: var(--ink); padding: 14px 28px; text-decoration: none; transition: background 0.2s; border: 1px solid var(--ink); display: inline-block; cursor: pointer; }
+  .btn-primary:hover { background: var(--accent); border-color: var(--accent); }
+  .btn-primary:disabled { opacity: 0.7; cursor: default; }
+  .btn-outline { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); border: 1px solid var(--border-dark); padding: 14px 28px; text-decoration: none; transition: border-color 0.2s, color 0.2s; display: inline-block; }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* STATUS CARD */
+  .hero-right { opacity: 0; animation: fadeUp 0.8s ease 0.3s forwards; }
+  .status-card { background: var(--white); border: 1px solid var(--border); padding: 40px; box-shadow: 0 2px 40px rgba(26,24,20,0.06); position: relative; }
+  .status-card::before { content: 'PROFILE'; position: absolute; top: -1px; left: 32px; font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.2em; background: var(--white); padding: 0 10px; transform: translateY(-50%); }
+  .status-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 16px 0; border-bottom: 1px solid var(--cream3); }
+  .status-row:last-child { border-bottom: none; }
+  .status-label { font-family: var(--mono); font-size: 10px; color: var(--ink-light); letter-spacing: 0.12em; text-transform: uppercase; flex-shrink: 0; padding-top: 2px; }
+  .status-value { font-size: 13px; color: var(--ink); text-align: right; font-weight: 400; line-height: 1.5; }
+  .status-value.gold { color: var(--accent); font-weight: 700; }
+  .status-dot { display: inline-block; width: 7px; height: 7px; background: #4caf50; border-radius: 50%; margin-right: 6px; animation: pulse 2s ease infinite; vertical-align: middle; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+  /* SECTIONS */
+  section { position: relative; z-index: 1; padding: 100px 56px; border-top: 1px solid var(--border); }
+  .section-label { font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+  .section-label::before { content: ''; width: 28px; height: 1px; background: var(--accent); flex-shrink: 0; }
+  .section-title { font-family: var(--display); font-weight: 700; font-size: clamp(36px, 4vw, 56px); letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 56px; color: var(--ink); }
+  .section-title em { font-style: italic; color: var(--accent); }
+
+  /* ABOUT */
+  .about-layout { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 72px; align-items: start; }
+  .about-body p { font-size: 15px; color: var(--ink-mid); line-height: 1.9; margin-bottom: 20px; }
+  .about-body p strong { color: var(--ink); font-weight: 700; }
+  .skills-heading { font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; color: var(--ink-light); text-transform: uppercase; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .skill-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--cream3); }
+  .skill-item:last-child { border-bottom: none; }
+  .skill-bullet { width: 4px; height: 4px; background: var(--accent); border-radius: 50%; flex-shrink: 0; margin-top: 7px; }
+  .skill-item-text { font-size: 13px; color: var(--ink-mid); line-height: 1.5; }
+
+  /* NEWSLETTER BANNER */
+  .newsletter-banner { background: var(--ink); text-align: center; padding: 80px 56px; border-top: none; }
+  .newsletter-banner .section-label { color: var(--accent-light); justify-content: center; }
+  .newsletter-banner .section-label::before { background: var(--accent-light); }
+  .newsletter-banner h2 { font-family: var(--display); font-weight: 700; font-size: clamp(32px, 4vw, 52px); color: var(--white); letter-spacing: -0.02em; margin-bottom: 16px; }
+  .newsletter-banner h2 em { font-style: italic; color: var(--accent-light); }
+  .newsletter-banner p { font-size: 15px; color: rgba(250,248,243,0.65); max-width: 520px; margin: 0 auto 36px; line-height: 1.8; }
+  .btn-subscribe-hero { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); background: var(--accent-light); padding: 16px 40px; text-decoration: none; transition: opacity 0.2s; border: none; cursor: pointer; display: inline-block; }
+  .btn-subscribe-hero:hover { opacity: 0.85; }
+
+  /* NEWSLETTER SECTION */
+  .newsletter-layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 80px; align-items: start; }
+  .newsletter-body p { font-size: 15px; color: var(--ink-mid); line-height: 1.9; margin-bottom: 32px; }
+  .topic-list { list-style: none; margin-bottom: 40px; }
+  .topic-list li { display: flex; align-items: center; gap: 14px; font-size: 14px; color: var(--ink-mid); padding: 12px 0; border-bottom: 1px solid var(--border); line-height: 1.4; }
+  .topic-list li:first-child { border-top: 1px solid var(--border); }
+  .topic-num { font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.1em; flex-shrink: 0; width: 28px; }
+
+  /* MAILCHIMP FORM STYLED */
+  .subscribe-card { background: var(--white); border: 1px solid var(--border); padding: 44px; box-shadow: 0 2px 32px rgba(26,24,20,0.05); position: sticky; top: 100px; }
+  .subscribe-card h3 { font-family: var(--display); font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+  .subscribe-card h3 em { font-style: italic; color: var(--accent); }
+  .subscribe-card .sub-desc { font-size: 13px; color: var(--ink-light); line-height: 1.7; margin-bottom: 24px; }
+  #mc_embed_signup { background: transparent !important; font-family: var(--body) !important; width: 100% !important; }
+  #mc_embed_signup h2 { display: none; }
+  #mc_embed_signup .mc-field-group { margin-bottom: 10px; }
+  #mc_embed_signup .mc-field-group label { font-family: var(--mono); font-size: 10px; color: var(--ink-light); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; display: block; }
+  #mc_embed_signup input[type="email"],
+  #mc_embed_signup input[type="text"] { background: var(--cream) !important; border: 1px solid var(--border) !important; color: var(--ink) !important; font-family: var(--mono) !important; font-size: 11px !important; padding: 13px 16px !important; outline: none !important; width: 100% !important; border-radius: 0 !important; }
+  #mc_embed_signup input[type="email"]:focus,
+  #mc_embed_signup input[type="text"]:focus { border-color: var(--accent) !important; }
+  #mc_embed_signup .button { background: var(--ink) !important; color: var(--white) !important; border: none !important; font-family: var(--mono) !important; font-size: 11px !important; letter-spacing: 0.14em !important; text-transform: uppercase !important; padding: 16px !important; cursor: pointer !important; width: 100% !important; border-radius: 0 !important; margin-top: 8px !important; transition: background 0.2s !important; }
+  #mc_embed_signup .button:hover { background: var(--accent) !important; }
+  #mc_embed_signup .indicates-required { font-family: var(--mono); font-size: 10px; color: var(--ink-faint); margin-bottom: 16px; }
+  #mc_embed_signup .asterisk { color: var(--accent); }
+  #mc_embed_signup #mce-responses { margin: 0; }
+  #mc_embed_signup .response { font-family: var(--mono); font-size: 11px; padding: 10px; margin-top: 8px; }
+  #mc_embed_signup #mce-error-response { color: #cc0000; background: #fff0f0; border: 1px solid #ffcccc; }
+  #mc_embed_signup #mce-success-response { color: #1a6b1a; background: #f0fff0; border: 1px solid #ccffcc; }
+  .mc-referral { display: none !important; }
+
+  /* NEWSLETTER ARCHIVE */
+  .archive-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 48px; }
+  .archive-card { background: var(--white); padding: 28px; transition: background 0.2s; cursor: pointer; text-decoration: none; display: block; }
+  .archive-card:hover { background: var(--accent-pale); }
+  .archive-num { font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.14em; margin-bottom: 10px; }
+  .archive-title { font-family: var(--display); font-size: 16px; font-weight: 600; color: var(--ink); line-height: 1.3; margin-bottom: 10px; }
+  .archive-excerpt { font-size: 12px; color: var(--ink-light); line-height: 1.7; }
+  .archive-arrow { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-top: 12px; display: block; }
+
+  /* RESOURCES */
+  .resources-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .resource-card { background: var(--white); border: 1px solid var(--border); padding: 32px 28px; transition: box-shadow 0.2s, border-color 0.2s; cursor: default; position: relative; overflow: hidden; }
+  .resource-card::after { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent); transform: scaleY(0); transform-origin: bottom; transition: transform 0.25s ease; }
+  .resource-card:hover { box-shadow: 0 4px 24px rgba(26,24,20,0.08); border-color: var(--border-dark); }
+  .resource-card:hover::after { transform: scaleY(1); }
+  .resource-tag { font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 14px; }
+  .resource-title { font-family: var(--display); font-size: 17px; font-weight: 600; color: var(--ink); margin-bottom: 10px; line-height: 1.3; }
+  .resource-desc { font-size: 13px; color: var(--ink-light); line-height: 1.7; margin-bottom: 20px; }
+  .resource-link { font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* RESUME */
+  .resume-layout { display: grid; grid-template-columns: 1fr 380px; gap: 72px; align-items: start; }
+  .resume-col h3 { font-family: var(--mono); font-size: 10px; color: var(--ink-light); letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid var(--border-dark); }
+  .timeline { margin-bottom: 48px; }
+  .timeline-item { display: grid; grid-template-columns: 130px 1fr; gap: 24px; padding: 24px 0; border-bottom: 1px solid var(--cream3); }
+  .t-date { font-family: var(--mono); font-size: 10px; color: var(--ink-faint); letter-spacing: 0.08em; line-height: 1.5; padding-top: 3px; }
+  .t-content h4 { font-family: var(--display); font-size: 16px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+  .t-org { font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+  .t-content p { font-size: 13px; color: var(--ink-light); line-height: 1.7; }
+  .t-content ul { list-style: none; margin-top: 8px; }
+  .t-content ul li { font-size: 12px; color: var(--ink-light); line-height: 1.7; padding-left: 14px; position: relative; }
+  .t-content ul li::before { content: '—'; position: absolute; left: 0; color: var(--accent); font-size: 10px; }
+
+  /* CONTACT CARD */
+  .contact-card { background: var(--white); border: 1px solid var(--border); padding: 40px; box-shadow: 0 2px 32px rgba(26,24,20,0.05); position: sticky; top: 100px; }
+  .contact-card h3 { font-family: var(--display); font-size: 26px; font-weight: 700; margin-bottom: 8px; color: var(--ink); }
+  .contact-card h3 em { font-style: italic; color: var(--accent); }
+  .contact-card .contact-desc { font-size: 13px; color: var(--ink-light); line-height: 1.7; margin-bottom: 28px; }
+  .cert-list { list-style: none; margin-bottom: 32px; }
+  .cert-list li { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--ink-mid); padding: 11px 0; border-bottom: 1px solid var(--cream3); }
+  .cert-check { width: 16px; height: 16px; border: 1px solid var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 9px; color: var(--accent); }
+  .contact-buttons { display: flex; flex-direction: column; gap: 10px; }
+
+  /* FOOTER */
+  footer { background: var(--ink); padding: 40px 56px; display: flex; justify-content: space-between; align-items: center; z-index: 1; position: relative; }
+  .footer-logo { font-family: var(--display); font-style: italic; font-size: 18px; color: var(--cream); }
+  .footer-copy { font-family: var(--mono); font-size: 10px; color: rgba(250,248,243,0.4); letter-spacing: 0.1em; }
+  .footer-links { display: flex; gap: 28px; list-style: none; }
+  .footer-links a { font-family: var(--mono); font-size: 10px; color: rgba(250,248,243,0.5); text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--accent-light); }
+  .footer-links span { font-family: var(--mono); font-size: 10px; color: rgba(250,248,243,0.5); letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* MODAL */
+  .modal { display: none; position: fixed; inset: 0; z-index: 999; background: rgba(26,24,20,0.6); backdrop-filter: blur(4px); align-items: center; justify-content: center; padding: 24px; }
+  .modal.open { display: flex; }
+  .modal-box { background: var(--white); border: 1px solid var(--border); padding: 48px; max-width: 520px; width: 100%; position: relative; box-shadow: 0 8px 60px rgba(26,24,20,0.15); }
+  .modal-close { position: absolute; top: 20px; right: 20px; background: none; border: none; font-family: var(--mono); font-size: 20px; color: var(--ink-light); cursor: pointer; line-height: 1; }
+  .modal-label { font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 12px; }
+  .modal-title { font-family: var(--display); font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+  .modal-title em { font-style: italic; color: var(--accent); }
+  .modal-desc { font-size: 13px; color: var(--ink-light); margin-bottom: 28px; line-height: 1.7; }
+  .modal-field { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+  .modal-field input, .modal-field textarea { background: var(--cream); border: 1px solid var(--border); color: var(--ink); font-family: var(--mono); font-size: 11px; padding: 13px 16px; outline: none; letter-spacing: 0.06em; width: 100%; transition: border-color 0.2s; }
+  .modal-field input:focus, .modal-field textarea:focus { border-color: var(--accent); }
+  .modal-field input::placeholder, .modal-field textarea::placeholder { color: var(--ink-faint); }
+  .modal-submit { display: block; width: 100%; background: var(--ink); color: var(--white); border: none; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; padding: 16px; cursor: pointer; transition: background 0.2s; }
+  .modal-submit:hover { background: var(--accent); }
+  .modal-success { display: none; text-align: center; padding: 24px 0; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--cream); }
+  ::-webkit-scrollbar-thumb { background: var(--border-dark); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hero, .about-layout, .newsletter-layout, .resume-layout { grid-template-columns: 1fr; padding: 100px 24px 60px; gap: 40px; }
+    section { padding: 60px 24px; }
+    .resources-grid { grid-template-columns: 1fr; }
+    .archive-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 20px; text-align: center; padding: 32px 24px; }
+    .newsletter-banner { padding: 60px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">
+    Jason Nguyen
+    <span>// Automation × Aviation</span>
+  </span>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#newsletter">Newsletter</a></li>
+    <li><a href="#resources">Resources</a></li>
+    <li><a href="#resume">Resume</a></li>
+  </ul>
+  <div class="nav-actions">
+    <span class="nav-btn-resources">Vanderlande Learning Resources</span>
+    <button class="nav-btn-subscribe" onclick="openSubscribeModal()">Subscribe to Newsletter</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home" style="border-top: none;">
+  <div class="hero-left">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-line"></div>
+      <div class="hero-eyebrow-text">Automation Operator · Commercial Pilot</div>
+    </div>
+    <h1>Jason<br><em>Nguyen</em></h1>
+    <div class="hero-subtitle">Where Logistics Meets the Sky</div>
+    <div class="hero-divider"></div>
+    <p class="hero-desc">Results-driven logistics and automation professional operating advanced warehouse systems at Vanderlande, Sydney. Commercial aviation training. 3+ years keeping complex systems running.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="openSubscribeModal()">Subscribe to Weekly Newsletter</button>
+      <a href="https://raw.githubusercontent.com/jasonnguyenjason05/jasonnguyenjason05.github.io/main/Jason_Nguyen_Resume.pdf" download="Jason_Nguyen_Resume.pdf" target="_blank" class="btn-outline">View Resume</a>
+      <a href="https://linkedin.com/in/jasonnguyen777" target="_blank" class="btn-outline">LinkedIn</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="status-card">
+      <div class="status-row"><span class="status-label">Full Name</span><span class="status-value">Jason Nguyen</span></div>
+      <div class="status-row"><span class="status-label">Location</span><span class="status-value">Sydney, NSW — Australia</span></div>
+      <div class="status-row"><span class="status-label">Automation Operator</span><span class="status-value">Vanderlande · Moorebank</span></div>
+      <div class="status-row"><span class="status-label">Licences & Certs</span><span class="status-value">Diploma of Aviation (CPL)<br>First Aid · Working at Heights</span></div>
+      <div class="status-row"><span class="status-label">Systems</span><span class="status-value">Vanderlande · Toyota Automotive<br>SCADA · ASRS · Cyklop · Dematic</span></div>
+      <div class="status-row"><span class="status-label">Newsletter</span><span class="status-value gold">Weekly — Active</span></div>
+      <div class="status-row"><span class="status-label">Employment</span><span class="status-value"><span class="status-dot"></span>Employed · Open to Collaboration</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="reveal">
+    <div class="section-label">About</div>
+    <h2 class="section-title">Logistics Professional.<br><em>Aviation Trained.</em></h2>
+  </div>
+  <div class="about-layout">
+    <div class="about-body reveal">
+      <p>I'm an <strong>Automation Operator (Flow Controller)</strong> at Vanderlande's Moorebank facility — one of Australia's most advanced warehouse automation sites. My role involves monitoring and optimising high-volume automated material handling systems, responding to operational alerts, and ensuring continuous flow with minimal downtime across 24/7 operations.</p>
+      <p>Day to day I work with <strong>Vanderlande, Toyota automotive systems, SCADA platforms, ASRS, robotic sorters, Cyklop Packing Systems, and Dematic cranes</strong>. I clear system jams, perform low-risk maintenance tasks, coordinate with maintenance and client teams, and mentor new operators through onboarding.</p>
+      <p>My <strong>Diploma of Aviation (Commercial Pilot Licence)</strong> from Sydney Flight College gives me a disciplined, safety-first approach that directly translates to managing complex automated systems under pressure. SOP adherence, situational awareness, and composure during faults aren't just aviation skills — they're what keeps a warehouse running.</p>
+      <p>This site is where I share what I learn across both worlds: <strong>warehouse automation insights</strong>, industry trends, and field notes from the floor of an active sortation facility.</p>
+    </div>
+    <div class="reveal">
+      <div class="skills-heading">Core Competencies</div>
+      <div class="skill-item"><div class="skill-bullet"></div><div class="skill-item-text">SOP & Safety Protocol Adherence — LOTO, PPE, aviation standards</div></div>
+      <div class="skill-item"><div class="skill-bullet"></div><div class="skill-item-text">Automated Systems Operation — Vanderlande, Toyota, SCADA, ASRS, sorters, RF scanners</div></div>
+      <div class="skill-item"><div class="skill-bullet"></div><div class="skill-item-text">Team Leadership & Task Delegation</div></div>
+      <div class="skill-item"><div class="skill-bullet"></div><div class="skill-item-text">Troubleshooting & Fault Diagnosis</div></div>
+      <div class="skill-item"><div class="skill-bullet"></div><div class="skill-item-text">Decision Making Under Pressure — aviation-trained critical thinking</div></div>
+      <div class="skill-item"><div class="skill-bullet"></div><div class="skill-item-text">Coaching & Mentoring new operators</div></div>
+      <div class="skill-item"><div class="skill-bullet"></div><div class="skill-item-text">Inventory Management — SCADA, Knapp, ASRS systems</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER BANNER -->
+<div class="newsletter-banner">
+  <div class="section-label">Weekly Dispatch</div>
+  <h2>Subscribe to my<br><em>Weekly Industry Newsletter</em></h2>
+  <p>Automation and warehouse logistics insights — written from the floor of a live sortation facility. Every Monday, no fluff.</p>
+  <button class="btn-subscribe-hero" onclick="openSubscribeModal()">Subscribe to my Weekly Industry Related Newsletters</button>
+</div>
+
+<!-- NEWSLETTER -->
+<section id="newsletter" style="background: var(--cream2);">
+  <div class="reveal">
+    <div class="section-label">Newsletter</div>
+    <h2 class="section-title">Weekly Automation<br><em>Industry Briefing</em></h2>
+  </div>
+  <div class="newsletter-layout">
+    <div class="reveal">
+      <p style="font-size:15px;color:var(--ink-mid);line-height:1.9;margin-bottom:32px;">A weekly briefing on warehouse automation, logistics technology, and industrial systems — written from the floor of an active sortation facility. Practical insights from someone who works these systems daily, published every Monday on this site and LinkedIn.</p>
+      <ul class="topic-list">
+        <li><span class="topic-num">01</span>Warehouse automation trends & emerging technology</li>
+        <li><span class="topic-num">02</span>Sortation and ASRS system deep-dives</li>
+        <li><span class="topic-num">03</span>APAC logistics market news & analysis</li>
+        <li><span class="topic-num">04</span>Career pathways in automation & controls</li>
+        <li><span class="topic-num">05</span>AI & robotics entering the warehouse</li>
+        <li><span class="topic-num">06</span>Field notes from a working operator</li>
+      </ul>
+
+      <!-- NEWSLETTER ARCHIVE -->
+      <div class="section-label" style="margin-top:0;">Latest Issues</div>
+      <div class="archive-grid">
+        <a href="https://jasonnguyenjason05.github.io/newsletters/2026-04-27-01-57.html" target="_blank" class="archive-card">
+          <div class="archive-num">Issue #001 — Apr 27, 2026</div>
+          <div class="archive-title">This Week in Warehouse Automation: Why Smart Sortation is Having Its Moment</div>
+          <div class="archive-excerpt">AI-powered sortation, labour challenges driving automation investment, and sustainability metrics becoming non-negotiable...</div>
+          <span class="archive-arrow">→ Read issue</span>
+        </a>
+        <div class="archive-card" style="opacity:0.5;cursor:default;">
+          <div class="archive-num">Issue #002 — Coming Apr 28, 2026</div>
+          <div class="archive-title">Next issue dropping Monday</div>
+          <div class="archive-excerpt">Subscribe below to get it delivered to your inbox automatically.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAILCHIMP SUBSCRIBE FORM -->
+    <div class="reveal">
+      <div class="subscribe-card">
+        <h3>Weekly <em>Dispatch</em></h3>
+        <p class="sub-desc">One email per week. Automation insights, system breakdowns, and field notes — delivered every Monday.</p>
+        <div id="mc_embed_shell">
+          <div id="mc_embed_signup">
+            <form action="https://github.us3.list-manage.com/subscribe/post?u=4c1de79ae084490c6f6dd16ed&amp;id=f40f91a846&amp;f_id=00f5c6e0f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
+              <div id="mc_embed_signup_scroll">
+                <div class="indicates-required"><span class="asterisk">*</span> indicates required</div>
+                <div class="mc-field-group"><label for="mce-EMAIL">Email Address <span class="asterisk">*</span></label><input type="email" name="EMAIL" class="required email" id="mce-EMAIL" required="" value=""></div>
+                <div class="mc-field-group"><label for="mce-FNAME">First Name</label><input type="text" name="FNAME" class="text" id="mce-FNAME" value=""></div>
+                <div id="mce-responses" class="clear">
+                  <div class="response" id="mce-error-response" style="display:none;"></div>
+                  <div class="response" id="mce-success-response" style="display:none;"></div>
+                </div>
+                <div aria-hidden="true" style="position:absolute;left:-5000px;">
+                  <input type="text" name="b_4c1de79ae084490c6f6dd16ed_f40f91a846" tabindex="-1" value="">
+                </div>
+                <div class="clear">
+                  <input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button" value="Subscribe to Weekly Newsletter">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <p style="font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.08em;margin-top:12px;text-align:center;">No spam. Unsubscribe anytime. Posted on LinkedIn every Monday.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESOURCES -->
+<section id="resources">
+  <div class="reveal">
+    <div class="section-label">Learning Resources</div>
+    <h2 class="section-title">Vanderlande Systems<br><em>Knowledge Base</em></h2>
+  </div>
+  <div class="resources-grid reveal">
+    <div class="resource-card"><div class="resource-tag">// Vanderlande</div><div class="resource-title">VISION WCS Overview</div><div class="resource-desc">Warehouse Control System architecture, order management, and integration with conveyor networks.</div><div class="resource-link">→ Coming soon</div></div>
+    <div class="resource-card"><div class="resource-tag">// Systems</div><div class="resource-title">Conveyor & ASRS Fundamentals</div><div class="resource-desc">Belt conveyors, roller beds, ASRS cranes, merges and diverts — how the physical network handles product flow.</div><div class="resource-link">→ Coming soon</div></div>
+    <div class="resource-card"><div class="resource-tag">// Operations</div><div class="resource-title">Flow Controller Playbook</div><div class="resource-desc">Responding to alarms, clearing blockages, coordinating with maintenance, and shift handover protocols.</div><div class="resource-link">→ Coming soon</div></div>
+    <div class="resource-card"><div class="resource-tag">// Safety</div><div class="resource-title">LOTO & Safety Systems</div><div class="resource-desc">Lock Out Tag Out procedures, PPE requirements, e-stop logic and zone isolation in automated environments.</div><div class="resource-link">→ Coming soon</div></div>
+    <div class="resource-card"><div class="resource-tag">// Equipment</div><div class="resource-title">Cyklop & Dematic Systems</div><div class="resource-desc">Operational notes on Cyklop Packing Systems and Dematic crane operation within an ASRS environment.</div><div class="resource-link">→ Coming soon</div></div>
+    <div class="resource-card"><div class="resource-tag">// Industry</div><div class="resource-title">APAC Automation Market Notes</div><div class="resource-desc">Key players, growth drivers, and what the next 5 years look like for warehouse automation in Australia.</div><div class="resource-link">→ Coming soon</div></div>
+  </div>
+</section>
+
+<!-- RESUME -->
+<section id="resume" style="background: var(--cream2);">
+  <div class="reveal">
+    <div class="section-label">Resume</div>
+    <h2 class="section-title">Experience &<br><em>Qualifications</em></h2>
+  </div>
+  <div class="resume-layout">
+    <div class="resume-col reveal">
+      <h3>// Work Experience</h3>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="t-date">JAN 2026<br>PRESENT</div>
+          <div class="t-content">
+            <h4>Automation Operator (Flow Controller)</h4>
+            <div class="t-org">Vanderlande — Moorebank, Sydney</div>
+            <ul>
+              <li>Monitor and optimise high-volume automated material handling systems ensuring continuous flow and minimal downtime</li>
+              <li>Respond to operational alerts, alarms, error notifications, blockages, and system warnings</li>
+              <li>Clear system jams and minor faults while documenting root causes for continuous improvement</li>
+              <li>Perform low-risk maintenance tasks — sensor alignment, filter replacement, pneumatic leak fixes</li>
+              <li>Operate Cyklop Packing System and Dematic cranes; experienced with pallet crane driving</li>
+              <li>Mentor and coach new recruits to become independent operators</li>
+              <li>Strict LOTO, PPE, and WHS compliance across 24/7 automated operations</li>
+            </ul>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="t-date">MAY 2025<br>JAN 2026</div>
+          <div class="t-content">
+            <h4>Assistant Inventory Control Manager</h4>
+            <div class="t-org">Woolworths — Auburn Automated CFC</div>
+            <ul>
+              <li>Delegated daily tasks to achieve stock replenishment targets</li>
+              <li>Resolved 20+ problematic articles per day; managed out-of-stocks</li>
+              <li>Diagnosed and resolved automotive, mechanical and IT system faults</li>
+              <li>Comprehensive understanding of Knapp Automotive systems</li>
+            </ul>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="t-date">NOV 2025<br>DEC 2025</div>
+          <div class="t-content">
+            <h4>Casual Mail & Parcel Processor</h4>
+            <div class="t-org">Australia Post — Sydney Gateway Facility</div>
+            <ul>
+              <li>Operated automated parcel systems — Beckhoff conveyor, bagging systems, Visa Touch label printers</li>
+              <li>Sorted mail and parcels based on operational and security requirements</li>
+            </ul>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="t-date">MAR 2023<br>MAY 2025</div>
+          <div class="t-content">
+            <h4>Replenishment Chiller/Freezer Team Member</h4>
+            <div class="t-org">Woolworths — Lidcombe Manual CFC</div>
+            <p>Stock replenishment, quality control, stock investigations in a high-throughput cold-chain environment.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="t-date">APR 2021<br>2022</div>
+          <div class="t-content">
+            <h4>Pharmacy Assistant</h4>
+            <div class="t-org">Lidcombe Pharmacy</div>
+            <p>Medication delivery, pharmaceutical product management, medical scripts and label management.</p>
+          </div>
+        </div>
+      </div>
+      <h3>// Education</h3>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="t-date">MAY 2023<br>JUL 2025</div>
+          <div class="t-content">
+            <h4>Diploma of Aviation — Commercial Pilot Licence</h4>
+            <div class="t-org">Sydney Flight College — Bankstown Airport</div>
+            <ul>
+              <li>Achieved commercial pilot standards with strict SOP and safety protocol adherence</li>
+              <li>Developed high-pressure decision-making through simulator training</li>
+              <li>Built safety-first mindset directly applicable to automation operations</li>
+            </ul>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="t-date">GRADUATED<br>2022</div>
+          <div class="t-content">
+            <h4>High School Certificate</h4>
+            <div class="t-org">Ashfield Boys High School</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTACT CARD -->
+    <div class="reveal">
+      <div class="contact-card">
+        <h3>Get in <em>Touch</em></h3>
+        <p class="contact-desc">Open to collaboration on automation content, industry projects, and knowledge sharing. Based in Sydney — available across APAC.</p>
+        <ul class="cert-list">
+          <li><span class="cert-check">✓</span>Diploma of Aviation (CPL)</li>
+          <li><span class="cert-check">✓</span>Working at Heights</li>
+          <li><span class="cert-check">✓</span>First Aid Certified</li>
+          <li><span class="cert-check">✓</span>LOTO Trained</li>
+          <li><span class="cert-check">✓</span>WHS Compliant</li>
+        </ul>
+        <div class="contact-buttons">
+          <button onclick="document.getElementById('contact-modal').classList.add('open')" class="btn-primary" style="text-align:center;width:100%;">Email Me</button>
+          <a href="https://linkedin.com/in/jasonnguyen777" target="_blank" class="btn-outline" style="text-align:center;">LinkedIn Profile</a>
+          <a href="https://raw.githubusercontent.com/jasonnguyenjason05/jasonnguyenjason05.github.io/main/Jason_Nguyen_Resume.pdf" download="Jason_Nguyen_Resume.pdf" target="_blank" class="btn-outline" style="text-align:center;">Download CV</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Jason Nguyen</div>
+  <div class="footer-copy">© 2026 Jason Nguyen — Sydney, NSW</div>
+  <ul class="footer-links">
+    <li><a href="https://linkedin.com/in/jasonnguyen777" target="_blank">LinkedIn</a></li>
+    <li><a href="#newsletter">Newsletter</a></li>
+    <li><span>Contact</span></li>
+  </ul>
+</footer>
+
+<!-- SUBSCRIBE MODAL -->
+<div id="subscribe-modal" class="modal" onclick="if(event.target===this)closeSubscribeModal()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeSubscribeModal()">×</button>
+    <div class="modal-label">// Weekly Dispatch</div>
+    <h3 class="modal-title">Subscribe to the <em>Newsletter</em></h3>
+    <p class="modal-desc">One email every Monday. Warehouse automation insights, system breakdowns, and field notes from the floor of a live sortation facility.</p>
+    <div id="mc_embed_shell_modal">
+      <div id="mc_embed_signup_modal">
+        <form action="https://github.us3.list-manage.com/subscribe/post?u=4c1de79ae084490c6f6dd16ed&amp;id=f40f91a846&amp;f_id=00f5c6e0f0" method="post" class="validate" target="_blank">
+          <div class="modal-field">
+            <input type="email" name="EMAIL" placeholder="EMAIL ADDRESS" required style="background:var(--cream);border:1px solid var(--border);color:var(--ink);font-family:var(--mono);font-size:11px;padding:13px 16px;outline:none;width:100%;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+            <input type="text" name="FNAME" placeholder="FIRST NAME" style="background:var(--cream);border:1px solid var(--border);color:var(--ink);font-family:var(--mono);font-size:11px;padding:13px 16px;outline:none;width:100%;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+          </div>
+          <div aria-hidden="true" style="position:absolute;left:-5000px;">
+            <input type="text" name="b_4c1de79ae084490c6f6dd16ed_f40f91a846" tabindex="-1" value="">
+          </div>
+          <input type="submit" value="Subscribe to Weekly Newsletter" class="modal-submit">
+        </form>
+      </div>
+    </div>
+    <p style="font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.08em;margin-top:12px;text-align:center;">No spam. Unsubscribe anytime.</p>
+  </div>
+</div>
+
+<!-- CONTACT MODAL -->
+<div id="contact-modal" class="modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="document.getElementById('contact-modal').classList.remove('open')">×</button>
+    <div class="modal-label">// Get in Touch</div>
+    <h3 class="modal-title">Send a <em>Message</em></h3>
+    <p class="modal-desc">Fill in your details and I'll get back to you shortly.</p>
+    <div id="contact-form-wrap">
+      <div class="modal-field">
+        <input id="cf-name" type="text" placeholder="YOUR NAME">
+        <input id="cf-email" type="email" placeholder="YOUR EMAIL">
+        <input id="cf-subject" type="text" placeholder="SUBJECT">
+        <textarea id="cf-message" placeholder="YOUR MESSAGE" rows="5" style="background:var(--cream);border:1px solid var(--border);color:var(--ink);font-family:var(--mono);font-size:11px;padding:13px 16px;outline:none;width:100%;resize:vertical;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+      </div>
+      <button onclick="submitContactForm()" class="modal-submit">Send Message</button>
+    </div>
+    <div id="contact-success" class="modal-success">
+      <div style="font-size:32px;margin-bottom:12px;">✓</div>
+      <p style="font-family:var(--display);font-size:18px;font-weight:600;margin-bottom:8px;">Message Sent</p>
+      <p style="font-size:13px;color:var(--ink-light);">Thanks for reaching out — I'll be in touch shortly.</p>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script>
+<script>
+  // Subscribe modal
+  function openSubscribeModal() {
+    document.getElementById('subscribe-modal').classList.add('open');
+  }
+  function closeSubscribeModal() {
+    document.getElementById('subscribe-modal').classList.remove('open');
+  }
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Active nav
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.getAttribute('id'); });
+    navLinks.forEach(link => { link.style.color = link.getAttribute('href') === '#' + current ? 'var(--ink)' : ''; });
+  });
+
+  // Contact form
+  function submitContactForm() {
+    const name = document.getElementById('cf-name').value.trim();
+    const email = document.getElementById('cf-email').value.trim();
+    const subject = document.getElementById('cf-subject').value.trim();
+    const message = document.getElementById('cf-message').value.trim();
+    if (!name || !email || !message) { alert('Please fill in your name, email, and message.'); return; }
+    const body = 'Name: ' + name + '\nEmail: ' + email + '\n\n' + message;
+    window.location.href = 'mailto:Jason.nguyenjason05@gmail.com?subject=' + encodeURIComponent(subject || 'Website Enquiry') + '&body=' + encodeURIComponent(body);
+    document.getElementById('contact-form-wrap').style.display = 'none';
+    document.getElementById('contact-success').style.display = 'block';
+    setTimeout(() => {
+      document.getElementById('contact-modal').classList.remove('open');
+      document.getElementById('contact-form-wrap').style.display = 'block';
+      document.getElementById('contact-success').style.display = 'none';
+      ['cf-name','cf-email','cf-subject','cf-message'].forEach(id => document.getElementById(id).value = '');
+    }, 3000);
+  }
+</script>
+</body>
+</html>
